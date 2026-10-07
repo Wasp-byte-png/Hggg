@@ -1,1 +1,192 @@
 
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sahara — The Great Desert</title>
+<style>
+:root{--bg:#2a1608;--g1:#7a4a1e;--g2:#2a1608;--sf:rgba(42,24,10,.68);--sf2:rgba(255,200,120,.08);--text:#fbefd9;--mut:#cdb085;--a:#f0ab3f;--b:#d9531e;--bd:rgba(240,171,63,.26);--ok:#4cc98a;--bad:#ef5a5f;box-sizing:border-box}
+@media(prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#e8c88e;--g1:#f3dcae;--g2:#d9b274;--sf:rgba(255,248,235,.82);--sf2:rgba(180,110,20,.09);--text:#2b1a08;--mut:#7a6240;--bd:rgba(150,85,10,.25)}}
+:root[data-theme="light"]{--bg:#e8c88e;--g1:#f3dcae;--g2:#d9b274;--sf:rgba(255,255,255,.8);--sf2:rgba(180,110,20,.09);--text:#2b1a08;--mut:#7a6240;--bd:rgba(150,85,10,.25)}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;overflow:hidden;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+body::before{content:"";position:fixed;inset:0;background:linear-gradient(180deg,var(--g1),var(--g2));pointer-events:none}
+#storm{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.haze{position:fixed;inset:-25%;z-index:0;pointer-events:none;background:linear-gradient(100deg,transparent 0,rgba(235,170,90,.28) 28%,transparent 48%,rgba(205,125,55,.26) 72%,transparent 100%);animation:drift 16s ease-in-out infinite alternate;filter:blur(30px)}
+.haze.h2{animation-duration:23s;animation-direction:alternate-reverse;opacity:.7}
+@keyframes drift{from{transform:translateX(-12%)}to{transform:translateX(12%)}}
+@media(prefers-reduced-motion:reduce){.haze{animation:none}}
+h1,h2,h3{margin:0 0 .4em;letter-spacing:-.015em}
+h2{font-size:1.6rem;margin-bottom:.3em}
+button{font:inherit;cursor:pointer;color:inherit}
+.tag{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--a);font-weight:800;display:block;margin-bottom:.4rem}
+.lead{color:var(--text);opacity:.82;font-size:.93rem;line-height:1.55;margin:0 0 .7rem}
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:18px;padding:1rem;text-align:left;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 6px 20px rgba(0,0,0,.18);position:relative;overflow:hidden}
+
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.6rem;margin-top:.7rem}
+#bar{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,var(--b),var(--a));width:0;transition:width .4s;z-index:9}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:calc(env(safe-area-inset-top,0px) + 1.3rem) 1.1rem calc(env(safe-area-inset-bottom,0px) + 5rem);opacity:0;transform:translateY(16px) scale(.97);transition:.45s;pointer-events:none;overflow-y:auto;z-index:1}
+.slide.on{opacity:1;transform:none;pointer-events:auto;z-index:2}
+.slide>*{max-width:560px;width:100%}
+.slide.on>*{animation:up .5s both}.slide.on>*:nth-child(2){animation-delay:.08s}.slide.on>*:nth-child(3){animation-delay:.16s}.slide.on>*:nth-child(4){animation-delay:.24s}.slide.on>*:nth-child(5){animation-delay:.32s}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.nav{position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + .7rem);display:flex;justify-content:center;align-items:center;gap:.9rem;z-index:9}
+.nb{width:46px;height:46px;border-radius:50%;border:1px solid var(--bd);background:var(--sf);font-size:1.2rem;backdrop-filter:blur(10px)}
+.nb:disabled{opacity:.25}
+#pg{background:var(--sf);border:1px solid var(--bd);border-radius:99px;padding:.5rem 1rem;font-weight:700;font-size:.8rem;min-width:84px;text-align:center}
+.cta{background:linear-gradient(90deg,var(--b),var(--a));color:#fff;border:0;border-radius:99px;padding:.9rem 1.8rem;font-weight:800;margin-top:.9rem;box-shadow:0 8px 22px rgba(217,83,30,.4)}
+h1{font-size:clamp(2.6rem,13vw,4rem);background:linear-gradient(100deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent;margin:0}
+.sun{font-size:3.6rem;animation:f 4s ease-in-out infinite;filter:drop-shadow(0 0 22px var(--a))}@keyframes f{50%{transform:translateY(-8px) scale(1.07)}}
+.dunes{position:fixed;left:0;right:0;bottom:0;height:140px;z-index:0;opacity:.55;pointer-events:none}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem;margin:1rem 0 .4rem}
+.st{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:.55rem .2rem}
+.st b{display:block;font-size:1.05rem;color:var(--a)}.st span{font-size:.6rem;color:var(--mut)}
+.seg{display:flex;gap:.35rem;margin-bottom:.7rem;flex-wrap:wrap}
+.seg button{flex:1;min-width:70px;background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:.5rem .3rem;font-size:.8rem}
+.seg .on{background:linear-gradient(90deg,var(--b),var(--a));color:#fff;border-color:transparent;font-weight:700}
+input[type=range]{width:100%;accent-color:var(--b)}
+.big{font-size:2.6rem;font-weight:800;color:var(--a);line-height:1}
+.chip{display:inline-block;background:var(--sf);border:1px solid var(--bd);border-radius:99px;padding:.32rem .75rem;font-size:.76rem;margin:.15rem}
+.flip{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:.8rem .6rem;text-align:center;min-height:118px;transition:transform .2s}
+.flip:active{transform:scale(.95)}
+.flip .e{font-size:2rem;display:block}.flip b{font-size:.85rem}.flip p{font-size:.73rem;margin:.3rem 0 0;color:var(--mut);line-height:1.35}
+.flip .h{display:none}.flip.on{border-color:var(--a);background:var(--sf2)}.flip.on .h{display:block}.flip.on .s{display:none}
+.row{display:flex;gap:.7rem;align-items:flex-start;margin-top:.5rem;cursor:pointer;padding:.7rem .85rem}
+.row .ic{font-size:1.5rem;flex:none}.row .t{font-size:.9rem;font-weight:700}.row .d{font-size:.8rem;color:var(--mut);line-height:1.4}
+.row.x .d{display:none}.row.x.on .d{display:block}
+.ck i{width:22px;height:22px;border-radius:50%;border:2px solid var(--a);flex:none;display:grid;place-items:center;font-style:normal;font-size:.7rem;color:transparent;margin-top:2px}
+.ck.on i{background:var(--a);color:#1c0f05}
+.opt{display:block;width:100%;text-align:left;background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:.62rem .85rem;margin-bottom:.4rem;font-size:.88rem}
+.opt.c{border-color:var(--ok);color:var(--ok)}.opt.w{border-color:var(--bad);color:var(--bad)}
+.fact{margin-top:.9rem;font-size:.8rem;color:var(--text);opacity:.8;text-align:center;line-height:1.5}
+</style></head><body>
+<div id="bar"></div>
+<canvas id="storm"></canvas><div class="haze"></div><div class="haze h2"></div>
+
+<section class="slide on">
+  <div class="sun">☀️</div>
+  <span class="tag">Deserts of the World · Group Project</span>
+  <h1>SAHARA</h1>
+  <p class="lead">The largest hot desert on Earth. Tap, slide and explore it piece by piece.</p>
+  <div class="stats"><div class="st"><b data-n="9.2">0</b><span>million km²</span></div><div class="st"><b data-n="11">0</b><span>countries</span></div><div class="st"><b data-n="25">0</b><span>% sand</span></div><div class="st"><b data-n="100">0</b><span>mm rain/yr</span></div></div>
+  <button class="cta" onclick="go(1)">Start →</button>
+</section>
+
+<section class="slide">
+  <span class="tag">A — Location</span>
+  <h2>Where is the Sahara?</h2>
+  <p class="lead">In North Africa, about 9.2 million km², nearly the size of the United States. It is bordered by the Atlantic Ocean in the west, the Red Sea in the east, the Mediterranean and Atlas Mountains in the north, and the Sahel in the south.</p>
+  <div class="card"><b style="font-size:.85rem">11 countries are touched by the Sahara</b><div style="margin-top:.4rem" id="cn"></div></div>
+  <div class="fact">🏔️ Highest point: Emi Koussi (3,415 m) in the Tibesti Mountains, Chad. The Nile crosses it in the east.</div>
+</section>
+
+<section class="slide">
+  <span class="tag">A — Landscape</span>
+  <h2>Not just sand</h2>
+  <p class="lead">Only about 25% of the Sahara is sand dunes. Pick a landscape type:</p>
+  <div class="seg" id="lt"></div>
+  <div class="card" id="lb"></div>
+  <div class="fact">🌿 5,000–11,000 years ago the Sahara was green, with lakes and savanna. Rock paintings prove it.</div>
+</section>
+
+<section class="slide">
+  <span class="tag">A — Climate</span>
+  <h2>Hot by day, cold by night</h2>
+  <div class="card">
+    <div class="seg" id="ss"><button class="on" onclick="season(0,this)">☀️ Summer</button><button onclick="season(1,this)">❄️ Winter</button></div>
+    <label class="lead" style="margin:0">Time: <b id="hr">12:00</b></label>
+    <input type="range" id="t" min="0" max="23" value="12">
+    <div class="big" id="tmp">42°C</div>
+    <div class="lead" id="td" style="margin:.3rem 0 0"></div>
+  </div>
+  <div class="fact">🌧️ Rainfall is usually under 100 mm a year, and some areas get less than 25 mm. Years can pass with no rain. Temperatures are approximate.</div>
+</section>
+
+<section class="slide">
+  <span class="tag">B — Flora & Fauna</span>
+  <h2>Animals</h2>
+  <p class="lead">Tap a card to see its adaptation.</p>
+  <div class="grid" id="an"></div>
+</section>
+
+<section class="slide">
+  <span class="tag">B — Flora & Fauna</span>
+  <h2>Plants</h2>
+  <p class="lead">Desert plants have very deep roots or tiny leaves to lose less water.</p>
+  <div class="grid" id="pl"></div>
+</section>
+
+<section class="slide">
+  <span class="tag">C — People</span>
+  <h2>Who lives in the Sahara?</h2>
+  <p class="lead">A few million people, from nomads to city dwellers.</p>
+  <div class="seg" id="ct"></div>
+  <div class="card" id="cb"></div>
+</section>
+
+<section class="slide">
+  <span class="tag">C — Lifestyle</span>
+  <h2>Daily life</h2>
+  <div id="lf"></div>
+</section>
+
+<section class="slide">
+  <span class="tag">D — Dangers</span>
+  <h2>Main dangers</h2>
+  <p class="lead">Tap for details.</p>
+  <div id="dg"></div>
+</section>
+
+<section class="slide">
+  <span class="tag">D — Survival</span>
+  <h2>Gear & safety tips</h2>
+  <p class="lead">Check off each tip as you learn it.</p>
+  <div id="sv"></div>
+</section>
+
+<section class="slide">
+  <span class="tag">Quiz</span>
+  <h2>How well do you know the Sahara?</h2>
+  <div class="card" id="qz"></div>
+</section>
+
+<div class="nav"><button class="nb" id="pv" onclick="go(cur-1)">←</button><div id="pg"></div><button class="nb" id="nx" onclick="go(cur+1)">→</button></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const S=[...document.querySelectorAll(".slide")];let cur=0,counted=0;
+function go(i){if(i<0||i>=S.length)return;cur=i;S.forEach((s,k)=>s.classList.toggle("on",k===i));
+$("pg").textContent=(i+1)+" / "+S.length;$("bar").style.width=((i+1)/S.length*100)+"%";$("pv").disabled=i==0;$("nx").disabled=i==S.length-1;if(i==0&&!counted)count()}
+function count(){counted=1;document.querySelectorAll("[data-n]").forEach(e=>{const n=+e.dataset.n,t0=performance.now();(function f(t){const p=Math.min(1,(t-t0)/1000);const v=n*p;e.textContent=(n%1?v.toFixed(1):Math.round(v))+(n==100?"-":"");if(p<1)requestAnimationFrame(f);else e.textContent=n==100?"<100":n})(t0)})}
+function tabs(seg,box,arr,fn){$(seg).innerHTML=arr.map((a,i)=>`<button class="${i?"":"on"}" data-i="${i}">${a[0]}</button>`).join("");const sel=i=>{[...$(seg).children].forEach((b,k)=>b.classList.toggle("on",k==i));$(box).innerHTML=fn(arr[i])};$(seg).onclick=e=>{const b=e.target.closest("button");if(b)sel(+b.dataset.i)};sel(0)}
+$("cn").innerHTML=["Algeria","Chad","Egypt","Libya","Mali","Mauritania","Morocco","Niger","Western Sahara","Sudan","Tunisia"].map(c=>`<span class="chip">${c}</span>`).join("");
+tabs("lt","lb",[["🏜️ Erg","Sand dune seas (erg): dunes can top 150 m. They are only a small part of the Sahara."],["🪨 Hamada","Bare rocky plateaus where wind has blown away the fine sand."],["🌑 Reg","Flat plains covered with gravel and small stones."],["🧂 Salt","Dried-up lakes and salt flats (chott), especially in Tunisia and Algeria."],["🌴 Oases","Places with underground water where plants grow: Siwa, Ghardaïa."]],a=>`<h3>${a[0]}</h3><p class="lead" style="margin:0">${a[1]}</p>`);
+let sea=0;function season(s,b){sea=s;[...b.parentNode.children].forEach(x=>x.classList.toggle("on",x==b));upd()}
+function upd(){const h=+$("t").value,m=sea?13:34,a=11,T=Math.round(m+a*Math.sin((h-9)/24*2*Math.PI));
+$("hr").textContent=String(h).padStart(2,"0")+":00";$("tmp").textContent="~"+T+"°C";
+$("td").textContent=T>=40?"Extreme heat: real risk of dehydration.":T>=25?"A hot, very dry day.":T>=10?"Cool air.":"A cold night, frost is possible.";}
+$("t").oninput=upd;upd();
+const fl=(id,A)=>$(id).innerHTML=A.map(f=>`<button class="flip" onclick="this.classList.toggle('on')"><span class="e">${f[0]}</span><b>${f[1]}</b><p class="s">Tap for adaptation</p><p class="h">${f[2]}</p></button>`).join("");
+fl("an",[["🐪","Camel","The hump stores fat, not water. It can go days without drinking, and wide feet don't sink in sand."],["🦊","Fennec fox","Huge ears release heat. It hunts at night and hides in a burrow by day."],["🐍","Horned viper","Hides under sand and moves sideways so its body doesn't burn."],["🦌","Addax antelope","Gets water from plants. Critically endangered."],["🐜","Silver ant","Runs in the hottest hours; its silvery hairs reflect sunlight."],["🦂","Scorpion","Hides by day and hunts at night."],["🐭","Jerboa","A hopping rodent that gets water from its food and doesn't need to drink."],["🦎","Monitor lizard","A large lizard that shelters in burrows during the heat."]]);
+fl("pl",[["🌴","Date palm","Grows at oases. Roots reach underground water and the dates feed people."],["🌳","Acacia","Tiny leaves and very long roots. Gives shade and food for animals."],["🌲","Saharan cypress","A rare tree surviving in mountains such as Tassili n'Ajjer."],["🥒","Wild gourd","Colocynth grows in sand, but it is poisonous to people."],["🌿","Tamarisk","Tolerates salty soil and excretes salt through its leaves."],["🌾","Alfa grass","Deep roots and narrow leaves reduce water loss."]]);
+tabs("ct","cb",[["Tuareg","Nomads known as the “blue men” for their indigo veils. They live in Algeria, Mali and Niger, travel by camel and keep their own script, Tifinagh."],["Berbers","The Amazigh people, among the oldest in North Africa. They have their own languages and culture and live in villages and oases."],["Toubou","People of the central Sahara (Chad, Libya, Niger) who herd livestock around the Tibesti region."],["Arabs","Bedouin and Arab communities in the north and east, tied to trade and herding."],["Cities","Tamanrasset, Timbuktu, Agadez, Ghardaïa and Siwa. Trading centers and old caravan crossroads."]],a=>`<h3>${a[0]}</h3><p class="lead" style="margin:0">${a[1]}</p>`);
+const rows=(id,A,cls)=>$(id).innerHTML=A.map(r=>`<div class="card row ${cls}" onclick="this.classList.toggle('on')">${cls=="ck"?"<i>✓</i>":`<span class="ic">${r[0]}</span>`}<div><div class="t">${cls=="ck"?r[0]+" ":""}${r[1]}</div><div class="d" ${cls=="ck"?'style="display:block"':""}>${r[2]}</div></div></div>`).join("");
+rows("lf",[["🏠","Homes","Tents of camel hair, or mud and stone houses with thick walls that stay cool."],["👘","Clothing","Loose, long clothes against sun and sand. Veils protect the face; Tuareg wear indigo."],["🍽️","Food","Dates, couscous, bread baked in sand, camel milk and mint tea."],["🐪","Transport","Camels for long routes and 4×4 vehicles today. Caravans once carried salt and gold."],["💼","Making a living","Trade, herding, oasis farming, mining (oil, gas, salt) and tourism."]],"x");
+rows("dg",[["🌡️","Heat & dehydration","You can lose lots of water through sweat. Signs: headache, dizziness, dry mouth. Drink before you feel thirsty."],["🌪️","Sandstorms","Strong wind lifts sand into a wall and kills visibility. Known as haboob, harmattan, sirocco."],["🧭","Getting lost","Dunes shift and tracks vanish. Without GPS you can get lost quickly."],["🌊","Flash floods","Rare rain can fill dry riverbeds (wadis) within minutes."],["🦂","Scorpions & vipers","Check shoes and bedding, never put hands under rocks."],["🥶","Cold nights","After sunset temperatures drop sharply, even below 0°C in winter."]],"x");
+rows("sv",[["💧","Water","Carry enough water for every day, plus a reserve. Drink regularly."],["🧭","Guide & GPS","Don't travel alone; bring a map, GPS and a satellite phone."],["👒","Clothing","Loose clothes, a hat or scarf, sunglasses and sunscreen."],["🌅","Timing","Travel at dawn and dusk; rest in shade at midday."],["🚙","Vehicle","If it breaks down, stay with it. It is easier to spot than a person."],["🩹","First aid","Oral rehydration salts, a first-aid kit and a blanket for the night."],["📍","Tell someone","Share your route and expected return time."]],"ck");
+const Q=[["Which continent is the Sahara on?",["Asia","Africa","America","Australia"],1],["What share of the Sahara is sand dunes?",["About 25%","About 90%","100%","About 5%"],0],["How many countries does the Sahara touch?",["5","8","11","20"],2],["Which people are called the “blue men”?",["Inuit","Maasai","Tuareg","Aboriginal"],2],["What does a camel's hump store?",["Water","Fat","Sand","Air"],1],["Which plant is poisonous?",["Date palm","Acacia","Wild gourd","Tamarisk"],2],["What do you do in a sandstorm?",["Run","Cover mouth and nose and stay put","Climb a dune","Drink cold water"],1],["Your vehicle breaks down. What do you do?",["Walk away","Stay with it","Leave at night","Sleep far away"],1]];
+let qi=0,sc=0;
+function rq(){if(qi>=Q.length){$("qz").innerHTML=`<h3 style="text-align:center;font-size:2.2rem">${sc} / ${Q.length}</h3><p class="lead" style="text-align:center">${sc>=6?"Great job, you're a Sahara expert! 🏆":"Try again 🏜️"}</p><button class="cta" style="display:block;margin:auto" onclick="qi=0;sc=0;rq()">↺ Restart</button>`;return}
+const q=Q[qi];$("qz").innerHTML=`<div class="lead" style="font-size:.72rem;margin:0">QUESTION ${qi+1}/${Q.length}</div><p style="font-weight:700;margin:.3rem 0 .7rem">${q[0]}</p>`+q[1].map((o,i)=>`<button class="opt" onclick="aq(${i})">${o}</button>`).join("")}
+function aq(i){const q=Q[qi];[...document.querySelectorAll("#qz .opt")].forEach((b,k)=>{b.disabled=true;if(k==q[2])b.classList.add("c");else if(k==i)b.classList.add("w")});if(i==q[2])sc++;setTimeout(()=>{qi++;rq()},850)}
+rq();go(0);
+(function(){const c=$("storm"),x=c.getContext("2d");let W,H;const P=[];
+const rs=()=>{W=c.width=innerWidth;H=c.height=innerHeight};rs();addEventListener("resize",rs);
+for(let i=0;i<170;i++)P.push({x:Math.random()*1200,y:Math.random()*1200,v:2+Math.random()*6,l:10+Math.random()*30,a:.12+Math.random()*.4,r:.6+Math.random()*1.6});
+const still=matchMedia("(prefers-reduced-motion:reduce)").matches;
+(function f(t){x.clearRect(0,0,W,H);const g=1+.7*Math.sin(t/2200);
+for(const p of P){if(!still)p.x+=p.v*g;p.y+=Math.sin(p.x/80)*.35;if(p.x>W+50){p.x=-50;p.y=Math.random()*H}if(p.y>H)p.y=0;if(p.y<0)p.y=H;
+x.strokeStyle="rgba(240,195,120,"+p.a+")";x.lineWidth=p.r;x.beginPath();x.moveTo(p.x-p.l*g,p.y);x.lineTo(p.x,p.y);x.stroke()}
+if(!still)requestAnimationFrame(f)})(0)})();
+let tx=null;document.addEventListener("touchstart",e=>{tx=e.target.closest("input,button,.row")?null:e.touches[0].clientX});
+document.addEventListener("touchend",e=>{if(tx===null)return;const d=e.changedTouches[0].clientX-tx;if(d<-50)go(cur+1);else if(d>50)go(cur-1);tx=null});
+</script></body></html>
